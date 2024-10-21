@@ -1,0 +1,21 @@
+.Navbar {
+}
+
+.Header-navbar {
+    background-color: rgba(40, 44, 52,.4);
+    min-height: 8vh;
+    display: flex;
+    flex-direction: row;
+    align-content: space-between;
+    flex-wrap: nowrap;
+    font-size: calc(10px + 2vmin);
+    color: white;
+    padding: 1vmin 5vmin 1vmin 5vmin;
+    width: 100%;
+}
+
+
+.Header-navbar-logo {
+    height: 5vmin;
+    pointer-events: none;
+}
