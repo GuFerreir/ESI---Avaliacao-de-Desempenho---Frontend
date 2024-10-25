@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../contexts/UserContext';
-import logo from '../imgs/Logo-usp.svg';
+import logo from '../assets/Logo-usp.svg';
 import '../css/Navbar.css';
 import alunoMock from '../mock_files/aluno'
 import professorMock from '../mock_files/professor'

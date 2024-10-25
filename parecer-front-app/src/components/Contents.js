@@ -5,7 +5,7 @@ import FormulariosContent from './Contents/FormulariosContent';
 import PerfilContent from './Contents/PerfilContent';
 import RelatoriosContent from './Contents/RelatoriosContent';
 
-function Contents({content}) {  
+function Contents({content, formType, relatorioID}) {  
     if (content === "HomeContent"){ 
         return (<HomeContent />)
     }
@@ -13,7 +13,7 @@ function Contents({content}) {
         return (<DisciplinasContent />)
     }
     else if (content === "Formularios") {
-        return (<FormulariosContent formType="" />)
+        return <FormulariosContent formType={formType} relatorioID={relatorioID} />;
     }
     else if (content === "Perfil") {
         return (<PerfilContent userID="" />)

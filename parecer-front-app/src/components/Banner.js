@@ -1,4 +1,4 @@
-import imagemCampusEach from '../imgs/each-usp.jpg';
+import imagemCampusEach from '../assets/each-usp.jpg';
 import '../css/Banner.css';
 
 function Navbar() {  
