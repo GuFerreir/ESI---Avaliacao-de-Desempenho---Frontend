@@ -1,21 +1,52 @@
 .Navbar {
+    color: black;
+    background-color: rgb(165, 165, 165);
 }
 
 .Header-navbar {
-    background-color: rgba(40, 44, 52,.4);
+    background-color: #0099B9;
     min-height: 8vh;
     display: flex;
-    flex-direction: row;
-    align-content: space-between;
-    flex-wrap: nowrap;
+    flex-direction: row; 
+    align-items: center; 
     font-size: calc(10px + 2vmin);
     color: white;
-    padding: 1vmin 5vmin 1vmin 5vmin;
+    padding: 0vmin 5vmin; 
     width: 100%;
 }
 
 
 .Header-navbar-logo {
-    height: 5vmin;
+    padding: 1px 1px;
     pointer-events: none;
+}
+
+.Header-navbar-button {
+    padding: 15px 30px;              
+    background-color: #FA9E0D;           
+    color: white;                  
+    border-radius: 20px;                  
+    min-width: 150px;                   
+    cursor: pointer;   
+    margin-left: 10px;
+}
+
+.Header-navbar-buttons{
+    display: flex; 
+    margin-right: 200px;
+    margin-left: auto;
+}
+
+.header-nav{
+    display: flex;
+    flex-direction: row;
+    align-content: space-between;
+    flex-wrap: nowrap;
+    list-style: none;
+    gap: 20px;
+}
+
+.header-nav a {
+    text-decoration: none;
+    color: white;
 }
