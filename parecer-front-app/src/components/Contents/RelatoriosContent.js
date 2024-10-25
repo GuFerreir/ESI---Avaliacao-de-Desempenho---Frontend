@@ -1,7 +1,7 @@
 //import imagemHome from '../imgs/.jpg';
 import '../../css/ContentsCss/RelatoriosContent.css';
 
-function RelatoriosContent() {  
+function RelatoriosContent({userID}) {  
     return (
         <div className="Backgroung-relatorios">
             <div className="Relatorios-proximas-entregas-session">
@@ -20,7 +20,7 @@ function RelatoriosContent() {
                     </thead>
                     <tbody className="Relatorios-proximas-entregas-tbody">
                         <tr className="Relatorios-proximas-entregas-tbody-tr">
-                            <td>Lorem</td>
+                            <td>Lorem{userID}</td>
                             <td>2 sem</td>
                             <td>15/12</td>
                             <td>icon</td>

@@ -1,18 +1,86 @@
+import React, { useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { UserContext } from '../contexts/UserContext';
 import logo from '../imgs/Logo-usp.svg';
 import '../css/Navbar.css';
 
-function Navbar() {  
+function Navbar() {
+    const { user, setUser } = useContext(UserContext);
+    const navigate = useNavigate();
+
+    // Função para carregar os dados do JSON e definir o usuário logado
+    const handleLogin = async (userType) => {
+        try {
+            let data;
+
+            // Verifica o tipo de usuário e atribui os dados correspondentes
+            if (userType === 'aluno') {
+                data = { name: "Gustavo", role: "Aluno" };
+            } else if (userType === 'professor') {
+                data = { name: "Marcelo", role: "Professor" };
+            }
+
+            console.log("Usuário logado:", data);
+            setUser(data); // Define o usuário no contexto
+        } catch (error) {
+            console.error('Erro ao carregar os dados do usuário:', error);
+        }
+    };
+
+    // Função para logout, limpa o usuário do contexto
+    const handleLogout = () => {
+        setUser(null); // Remove o usuário do contexto
+        navigate('/'); // Redireciona o usuário para a página Home
+    };
+
     return (
         <div className="Header">
             <header className="Header-navbar">
                 <img src={logo} className="Header-navbar-logo" alt="logo" />
+
+                <nav>
+                    <ul>
+                        <li><Link to="/">Home</Link></li>
+                        {/* Exibir links somente se o usuário estiver logado */}
+                        {user && (
+                            <>
+                                <li><Link to="/disciplinas">Disciplinas</Link></li>
+                                <li><Link to="/formulario">Formulario</Link></li>
+                                <li><Link to="/perfil">Perfil</Link></li>
+                                <li><Link to="/relatorio">Relatorio</Link></li>
+                            </>
+                        )}
+                    </ul>
+                </nav>
+
                 <div>
-                    <button className="Header-navbar-button">Acessar como aluno</button>
-                    <button className="Header-navbar-button">Acessar como docente</button>
+                    {user ? (
+                        <button
+                            className="Header-navbar-button"
+                            onClick={handleLogout}
+                        >
+                            Logout
+                        </button>
+                    ) : (
+                        <>
+                            <button
+                                className="Header-navbar-button"
+                                onClick={() => handleLogin('aluno')}
+                            >
+                                Acessar como aluno
+                            </button>
+                            <button
+                                className="Header-navbar-button"
+                                onClick={() => handleLogin('professor')}
+                            >
+                                Acessar como docente
+                            </button>
+                        </>
+                    )}
                 </div>
             </header>
         </div>
-    )
+    );
 }
 
 export default Navbar;
