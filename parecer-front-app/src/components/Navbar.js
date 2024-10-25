@@ -41,7 +41,7 @@ function Navbar() {
                 <img src={logo} className="Header-navbar-logo" alt="logo" />
 
                 <nav>
-                    <ul>
+                    <ul className="header-nav">
                         <li><Link to="/">Home</Link></li>
                         {/* Exibir links somente se o usuário estiver logado */}
                         {user && (
@@ -53,7 +53,7 @@ function Navbar() {
                     </ul>
                 </nav>
 
-                <div>
+                <div className="Header-navbar-buttons">
                     {user ? (
                         <button
                             className="Header-navbar-button"
