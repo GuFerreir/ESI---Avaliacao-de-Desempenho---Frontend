@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../contexts/UserContext';
 import logo from '../imgs/Logo-usp.svg';
 import '../css/Navbar.css';
+import alunoMock from '../mock_files/aluno'
+import professorMock from '../mock_files/professor'
 
 function Navbar() {
     const { user, setUser } = useContext(UserContext);
@@ -15,9 +17,9 @@ function Navbar() {
 
             // Verifica o tipo de usuário e atribui os dados correspondentes
             if (userType === 'aluno') {
-                data = { name: "Gustavo", role: "Aluno" };
+                data = alunoMock;
             } else if (userType === 'professor') {
-                data = { name: "Marcelo", role: "Professor" };
+                data = professorMock;
             }
 
             console.log("Usuário logado:", data);
@@ -45,9 +47,7 @@ function Navbar() {
                         {user && (
                             <>
                                 <li><Link to="/disciplinas">Disciplinas</Link></li>
-                                <li><Link to="/formulario">Formulario</Link></li>
                                 <li><Link to="/perfil">Perfil</Link></li>
-                                <li><Link to="/relatorio">Relatorio</Link></li>
                             </>
                         )}
                     </ul>
