@@ -6,14 +6,14 @@ function FormulariosContent({ formType, relatorioID }) {
     if (formType === "EnvioDeRelatorio") { 
         return (
             <div>
-                <Link to="/disciplinas">Voltar</Link>
+                <Link to="/relatorios">Voltar</Link>
                 <FormularioEnvioRelatorio ID={relatorioID} />
             </div>
         );
     } else if (formType === "AvaliacaoDeRelatorio") {
         return (
             <div>
-                <Link to="/disciplinas">Voltar</Link>
+                <Link to="/relatorios">Voltar</Link>
                 <FormularioAvaliacao ID={relatorioID} />
             </div>
         );

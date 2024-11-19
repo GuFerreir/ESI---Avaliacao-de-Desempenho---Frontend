@@ -46,7 +46,7 @@ function Navbar() {
                         {/* Exibir links somente se o usuário estiver logado */}
                         {user && (
                             <>
-                                <li><Link to="/disciplinas">Disciplinas</Link></li>
+                                <li><Link to="/relatorios">Relatórios</Link></li>
                                 <li><Link to="/perfil">Perfil</Link></li>
                             </>
                         )}
