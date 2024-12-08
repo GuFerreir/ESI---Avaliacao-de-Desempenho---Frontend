@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../../css/ContentsCss/Formularios.css';
 
-const FormularioEnvioRelatorio = () => {
+const FormularioEnvioRelatorio = ({ alunoId }) => {
   const [formData, setFormData] = useState({
-    email: 'Informação obtida via API',
-    nomeAluno: 'Informação obtida via API',
-    nomeOrientador: 'Informação obtida via API',
-    numeroUSP: 'Informação obtida via API',
-    lattesLink: 'Informação obtida via API',
-    lattesUpdate: '2024-01-01',
-    curso: 'mestrado',
-    mesAnoIngresso: 'Informação obtida via API',
-    avaliacaoAnterior: 'aprovado',
+    email: '',
+    nomeAluno: '',
+    nomeOrientador: '',
+    numeroUSP: '',
+    lattesLink: '',
+    lattesUpdate: '',
+    curso: '',
+    mesAnoIngresso: '',
+    avaliacaoAnterior: '',
     qualificacao: '',
     prazoQualificacao: '',
     prazoDeposito: '',
@@ -22,6 +22,37 @@ const FormularioEnvioRelatorio = () => {
     apoioCoordenacao: ''
   });
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`http://localhost:8000/api/user/2`);
+        const data = await response.json();
+        setFormData({
+          email: data.email,
+          nomeAluno: data.nomeAluno,
+          nomeOrientador: data.nomeOrientador,
+          numeroUSP: data.numeroUSP,
+          lattesLink: data.lattesLink,
+          lattesUpdate: data.lattesUpdate,
+          curso: data.curso,
+          mesAnoIngresso: data.mesAnoIngresso,
+          avaliacaoAnterior: 'aprovado',
+          qualificacao: '',
+          prazoQualificacao: '',
+          prazoDeposito: '',
+          producaoArtigos: '',
+          atividadesAcademicas: '',
+          resumoAtividades: '',
+          declaracaoAdicional: '',
+          apoioCoordenacao: ''
+        });
+      } catch (error) {
+        console.error('Erro ao buscar dados:', error);
+      }
+    };
+    fetchData();
+  }, [alunoId]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -29,9 +60,41 @@ const FormularioEnvioRelatorio = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Lógica para envio do formulário
     console.log('Dados do formulário:', formData);
   };
+
+   const payload = {
+      email: formData.email,
+      nomeAluno: formData.nomeAluno,
+      nomeOrientador: formData.nomeOrientador,
+      numeroUSP: formData.numeroUSP,
+      lattesLink: formData.lattesLink,
+      lattesUpdate: formData.lattesUpdate,
+      curso: formData.curso,
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`http://localhost:8000/api/relatorio/`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (response.ok) {
+          console.log('Relatório enviado com sucesso');
+        } else {
+          console.error('Erro ao enviar relatório:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Erro ao enviar dados:', error);
+      }
+    };
+    fetchData();
+  }, [alunoId]);
 
   return (
     <div className="Backgroung-envio-relatorio">
