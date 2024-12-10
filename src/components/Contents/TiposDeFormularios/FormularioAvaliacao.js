@@ -1,24 +1,67 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../../css/ContentsCss/Formularios.css';
 
-const FormularioAvaliacao = () => {
+const FormularioAvaliacao = ({ alunoId, relatorioId }) => {
   const [formData, setFormData] = useState({
-    nomeParecerista: 'Informação obtida via API',
-    papelParecerista: 'Informação obtida via API',
-    nomeAluno: 'Informação obtida via API',
-    parecerDesempenho: '',  // Campo 4 editável
-    avaliacaoDesempenho: ''  // Campo 5 editável
+    nomeParecerista: '',
+    papelParecerista: '',
+    nomeAluno: '',
+    parecerDesempenho: '',
+    avaliacaoDesempenho: ''
   });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`http://localhost:8000/api/user/1`);
+        const data = await response.json();
+        setFormData({
+          nomeParecerista: data.nomeParecerista,
+          papelParecerista: data.papelParecerista,
+          nomeAluno: data.nomeAluno,
+          parecerDesempenho: '',
+          avaliacaoDesempenho: ''
+        });
+      } catch (error) {
+        console.error('Erro ao buscar dados:', error);
+      }
+    };
+    fetchData();
+  }, [alunoId]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Lógica para envio do formulário
-    console.log('Dados do formulário:', formData);
+
+    const payload = {
+      nomeParecerista: formData.nomeParecerista,
+      papelParecerista: formData.papelParecerista,
+      nomeAluno: formData.nomeAluno,
+      parecerDesempenho: formData.parecerDesempenho,
+      avaliacaoDesempenho: formData.avaliacaoDesempenho
+    };
+
+    try {
+      const response = await fetch(`http://localhost:8000/api/avaliacao/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (response.ok) {
+        console.log('Avaliacao enviada com sucesso');
+      } else {
+        console.error('Erro ao enviar avaliacao:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Erro ao enviar dados:', error);
+    }
   };
 
   return (
@@ -56,6 +99,7 @@ const FormularioAvaliacao = () => {
             id="adequado"
             name="avaliacaoDesempenho"
             value="adequado"
+            checked={formData.avaliacaoDesempenho === 'adequado'}
             onChange={handleChange}
           />
           <label htmlFor="adequado">Adequado</label><br />
@@ -64,6 +108,7 @@ const FormularioAvaliacao = () => {
             id="adequadoRessalvas"
             name="avaliacaoDesempenho"
             value="adequado-com-ressalvas"
+            checked={formData.avaliacaoDesempenho === 'adequado-com-ressalvas'}
             onChange={handleChange}
           />
           <label htmlFor="adequadoRessalvas">Adequado com ressalvas</label><br />
@@ -72,6 +117,7 @@ const FormularioAvaliacao = () => {
             id="insatisfatorio"
             name="avaliacaoDesempenho"
             value="insatisfatorio"
+            checked={formData.avaliacaoDesempenho === 'insatisfatorio'}
             onChange={handleChange}
           />
           <label htmlFor="insatisfatorio">Insatisfatório</label><br /><br />

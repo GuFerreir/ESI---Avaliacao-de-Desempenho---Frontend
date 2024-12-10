@@ -1,39 +1,20 @@
 import React, { useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { UserContext } from '../contexts/UserContext';
 import logo from '../assets/Logo-usp.svg';
 import '../css/Navbar.css';
-import alunoMock from '../mock_files/aluno'
-import professorMock from '../mock_files/professor'
 
 function Navbar() {
     const { user, setUser } = useContext(UserContext);
     const navigate = useNavigate();
+    const location = useLocation();
 
-    // Função para carregar os dados do JSON e definir o usuário logado
-    const handleLogin = async (userType) => {
-        try {
-            let data;
-
-            // Verifica o tipo de usuário e atribui os dados correspondentes
-            if (userType === 'aluno') {
-                data = alunoMock;
-            } else if (userType === 'professor') {
-                data = professorMock;
-            }
-
-            console.log("Usuário logado:", data);
-            setUser(data); // Define o usuário no contexto
-        } catch (error) {
-            console.error('Erro ao carregar os dados do usuário:', error);
-        }
-    };
-
-    // Função para logout, limpa o usuário do contexto
     const handleLogout = () => {
-        setUser(null); // Remove o usuário do contexto
-        navigate('/'); // Redireciona o usuário para a página Home
+        setUser(null);
+        navigate('/');
     };
+
+    const isLoginPage = location.pathname ==='/login'
 
     return (
         <div className="Header">
@@ -43,7 +24,7 @@ function Navbar() {
                 <nav>
                     <ul className="header-nav">
                         <li><Link to="/">Home</Link></li>
-                        {/* Exibir links somente se o usuário estiver logado */}
+                        {/* Display links only if the user is logged in */}
                         {user && (
                             <>
                                 <li><Link to="/relatorios">Relatórios</Link></li>
@@ -54,29 +35,16 @@ function Navbar() {
                 </nav>
 
                 <div className="Header-navbar-buttons">
+                    {!isLoginPage && (
+                        <button className="Header-navbar-button" onClick={() => navigate('/login')}>
+                            Login
+                        </button>
+                    )}
                     {user ? (
-                        <button
-                            className="Header-navbar-button"
-                            onClick={handleLogout}
-                        >
+                        <button className="Header-navbar-button" onClick={handleLogout}>
                             Logout
                         </button>
-                    ) : (
-                        <>
-                            <button
-                                className="Header-navbar-button"
-                                onClick={() => handleLogin('aluno')}
-                            >
-                                Acessar como aluno
-                            </button>
-                            <button
-                                className="Header-navbar-button"
-                                onClick={() => handleLogin('professor')}
-                            >
-                                Acessar como docente
-                            </button>
-                        </>
-                    )}
+                    ) : null}
                 </div>
             </header>
         </div>

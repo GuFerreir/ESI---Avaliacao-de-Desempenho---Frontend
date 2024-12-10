@@ -1,7 +1,7 @@
 import React from 'react';
 
 function ProfessorInfo({ professor }) {
-    const alunosOrientados = professor.Alunos;
+    const alunosOrientados = professor.alunos || [];
 
     return (
         <div className="Professor-Info">
@@ -13,13 +13,15 @@ function ProfessorInfo({ professor }) {
                     <tr>
                         <th>Matrícula</th>
                         <th>Nome Completo</th>
+                        <th>Email</th>
                     </tr>
                 </thead>
                 <tbody>
                     {alunosOrientados.map((aluno, index) => (
                         <tr key={index}>
-                            <td>{aluno.matricula}</td>
+                            <td>{aluno.id_matricula}</td>
                             <td>{aluno.nome_completo}</td>
+                            <td>{aluno.email}</td>
                         </tr>
                     ))}
                 </tbody>

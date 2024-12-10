@@ -2,18 +2,18 @@ import '../../css/ContentsCss/RelatoriosContent.css';
 import React, { useContext } from 'react';
 import { UserContext } from '../../contexts/UserContext';
 import { useNavigate } from 'react-router-dom';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
 
 function RelatoriosContent() {
     const { user } = useContext(UserContext);
-    const [alunoSelecionado, setAlunoSelecionado] = React.useState(""); // Estado para armazenar a matrícula selecionada
+    const [alunoSelecionado, setAlunoSelecionado] = React.useState("");
     const navigate = useNavigate();
 
-    // Verifica se o usuário é válido
     if (!user || !user.Usuario) {
         return <div>Carregando informações...</div>;
     }
 
-    // Filtra relatórios para alunos
     const proximasEntregas = user.Usuario.tipo_usuario === "Aluno"
         ? user.Relatorios.filter(relatorio => !relatorio.avaliado)
         : [];
@@ -22,7 +22,6 @@ function RelatoriosContent() {
         ? user.Relatorios.filter(relatorio => relatorio.avaliado)
         : [];
 
-    // Filtra relatórios para docentes
     const relatoriosParaAvaliar = user.Usuario.tipo_usuario === "Docente"
     ? user.Relatorios.filter((relatorio) =>
         (!alunoSelecionado || relatorio.matricula === parseInt(alunoSelecionado)) &&
@@ -39,13 +38,11 @@ function RelatoriosContent() {
     )
     : [];
 
-    // Obtém o conceito do relatório
     const getConceito = (relatorioId) => {
         const avaliacao = user.Avaliacao.find(avaliacao => avaliacao.relatorio_id === relatorioId);
         return avaliacao ? avaliacao.conceito : "Pendente";
     };
 
-    // Redireciona para o formulário com os dados necessários
     const handleFormularioClick = (formularioType, relatorioId) => {
         navigate('/formulario', { state: { formType: formularioType, relatorioID: relatorioId } });
     };
@@ -66,10 +63,12 @@ function RelatoriosContent() {
                     </select>
                 </div>
             )}
-                        
+
             {/* Relatórios para Alunos */}
             {user.Usuario.tipo_usuario === "Aluno" && (
                 <div className="Relatorios-proximas-entregas-session">
+                    <Card>
+                    <CardContent>
                     <h2 className="Relatorios-proximas-entregas-title">Próximas entregas</h2>
                     <table className="Relatorios-proximas-entregas-table">
                         <thead>
@@ -97,6 +96,8 @@ function RelatoriosContent() {
                             ))}
                         </tbody>
                     </table>
+                    </CardContent>
+                    </Card>
                 </div>
             )}
 
