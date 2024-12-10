@@ -1,33 +1,50 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import '../../../css/ContentsCss/Formularios.css';
+import { UserContext } from '../../../contexts/UserContext';
 
-const FormularioAvaliacao = ({ alunoId, relatorioId }) => {
+
+const FormularioAvaliacao = ({ relatorioId }) => {
+  const { user } = useContext(UserContext);
   const [formData, setFormData] = useState({
     nomeParecerista: '',
     papelParecerista: '',
     nomeAluno: '',
     parecerDesempenho: '',
-    avaliacaoDesempenho: ''
+    avaliacaoDesempenho: '',
   });
+
+  const [successMessage, setSuccessMessage] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/api/user/1`);
+        const response = await fetch(`http://localhost:8000/api/formulario/?relatorioId=${relatorioId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${user.token}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`Erro HTTP: ${response.status}`);
+        }
         const data = await response.json();
+
         setFormData({
           nomeParecerista: data.nomeParecerista,
           papelParecerista: data.papelParecerista,
           nomeAluno: data.nomeAluno,
           parecerDesempenho: '',
-          avaliacaoDesempenho: ''
+          avaliacaoDesempenho: '',
         });
       } catch (error) {
         console.error('Erro ao buscar dados:', error);
       }
     };
+
     fetchData();
-  }, [alunoId]);
+  }, [relatorioId]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -38,26 +55,34 @@ const FormularioAvaliacao = ({ alunoId, relatorioId }) => {
     e.preventDefault();
 
     const payload = {
+      relatorioId: relatorioId,
       nomeParecerista: formData.nomeParecerista,
       papelParecerista: formData.papelParecerista,
-      nomeAluno: formData.nomeAluno,
       parecerDesempenho: formData.parecerDesempenho,
-      avaliacaoDesempenho: formData.avaliacaoDesempenho
+      avaliacaoDesempenho: formData.avaliacaoDesempenho,
     };
 
     try {
-      const response = await fetch(`http://localhost:8000/api/avaliacao/`, {
+      const response = await fetch(`http://localhost:8000/api/formulario/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Token ${user.token}`,
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
       });
 
       if (response.ok) {
-        console.log('Avaliacao enviada com sucesso');
+        setSuccessMessage('Formulário enviado com sucesso!');
+        console.log('Formulário enviado com sucesso');
+        setFormData({
+          ...formData,
+          parecerDesempenho: '',
+          avaliacaoDesempenho: '',
+        });
+        setTimeout(() => setSuccessMessage(''), 5000);
       } else {
-        console.error('Erro ao enviar avaliacao:', response.statusText);
+        console.error('Erro ao enviar formulário:', response.statusText);
       }
     } catch (error) {
       console.error('Erro ao enviar dados:', error);
@@ -65,10 +90,12 @@ const FormularioAvaliacao = ({ alunoId, relatorioId }) => {
   };
 
   return (
-    <div className="Backgroung-avaliacao-relatorio">
+    <div className="Background-avaliacao-relatorio">
       <div className="Avaliacao-relatorio-box-title">
         <h2 className="Avaliacao-relatorio-title">Formulário de Avaliação</h2>
       </div>
+
+      {successMessage && <div className="success-message">{successMessage}</div>}
 
       <div className="Avaliacao-relatorio-box-form">
         <form onSubmit={handleSubmit}>
@@ -82,7 +109,7 @@ const FormularioAvaliacao = ({ alunoId, relatorioId }) => {
           <label htmlFor="nomeAluno">Nome do aluno avaliado:</label>
           <input type="text" id="nomeAluno" name="nomeAluno" disabled value={formData.nomeAluno} /><br /><br />
 
-          {/* Campos editáveis (questões 4 e 5) */}
+          {/* Campos editáveis */}
           <label htmlFor="parecerDesempenho">Parecer sobre o desempenho do aluno:</label><br />
           <textarea
             id="parecerDesempenho"
@@ -98,8 +125,8 @@ const FormularioAvaliacao = ({ alunoId, relatorioId }) => {
             type="radio"
             id="adequado"
             name="avaliacaoDesempenho"
-            value="adequado"
-            checked={formData.avaliacaoDesempenho === 'adequado'}
+            value="Adequado"
+            checked={formData.avaliacaoDesempenho === 'Adequado'}
             onChange={handleChange}
           />
           <label htmlFor="adequado">Adequado</label><br />
@@ -107,8 +134,8 @@ const FormularioAvaliacao = ({ alunoId, relatorioId }) => {
             type="radio"
             id="adequadoRessalvas"
             name="avaliacaoDesempenho"
-            value="adequado-com-ressalvas"
-            checked={formData.avaliacaoDesempenho === 'adequado-com-ressalvas'}
+            value="Adequado com Ressalvas"
+            checked={formData.avaliacaoDesempenho === 'Adequado com Ressalvas'}
             onChange={handleChange}
           />
           <label htmlFor="adequadoRessalvas">Adequado com ressalvas</label><br />
@@ -116,8 +143,8 @@ const FormularioAvaliacao = ({ alunoId, relatorioId }) => {
             type="radio"
             id="insatisfatorio"
             name="avaliacaoDesempenho"
-            value="insatisfatorio"
-            checked={formData.avaliacaoDesempenho === 'insatisfatorio'}
+            value="Insatisfatório"
+            checked={formData.avaliacaoDesempenho === 'Insatisfatório'}
             onChange={handleChange}
           />
           <label htmlFor="insatisfatorio">Insatisfatório</label><br /><br />

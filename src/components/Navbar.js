@@ -35,7 +35,7 @@ function Navbar() {
                 </nav>
 
                 <div className="Header-navbar-buttons">
-                    {!isLoginPage && (
+                    {!isLoginPage && !user && (
                         <button className="Header-navbar-button" onClick={() => navigate('/login')}>
                             Login
                         </button>
