@@ -2,19 +2,19 @@ import FormularioEnvioRelatorio from './TiposDeFormularios/FormularioEnvioRelato
 import FormularioAvaliacao from './TiposDeFormularios/FormularioAvaliacao';
 import { Link } from 'react-router-dom';
 
-function FormulariosContent({ formType, relatorioID }) {  
-    if (formType === "EnvioDeRelatorio") { 
+function FormulariosContent({ formType, relatorioID }) {
+    if (formType === "EnvioDeRelatorio") {
         return (
             <div>
                 <Link to="/relatorios">Voltar</Link>
-                <FormularioEnvioRelatorio ID={relatorioID} />
+                <FormularioEnvioRelatorio relatorioId={relatorioID} />
             </div>
         );
     } else if (formType === "AvaliacaoDeRelatorio") {
         return (
             <div>
                 <Link to="/relatorios">Voltar</Link>
-                <FormularioAvaliacao ID={relatorioID} />
+                <FormularioAvaliacao relatorioId={relatorioID} />
             </div>
         );
     } else {

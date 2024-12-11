@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import '../../../css/ContentsCss/Formularios.css';
+import { UserContext } from '../../../contexts/UserContext';
 
-const FormularioEnvioRelatorio = ({ alunoId }) => {
+const FormularioEnvioRelatorio = ({ relatorioId }) => {
+  const { user } = useContext(UserContext);
   const [formData, setFormData] = useState({
     email: '',
     nomeAluno: '',
@@ -22,21 +24,35 @@ const FormularioEnvioRelatorio = ({ alunoId }) => {
     apoioCoordenacao: ''
   });
 
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/api/user/2`);
+        const response = await fetch(`http://localhost:8000/api/formulario/?relatorioId=${relatorioId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${user.token}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Erro ao buscar dados do relatório');
+        }
+
         const data = await response.json();
         setFormData({
-          email: data.email,
-          nomeAluno: data.nomeAluno,
-          nomeOrientador: data.nomeOrientador,
-          numeroUSP: data.numeroUSP,
-          lattesLink: data.lattesLink,
-          lattesUpdate: data.lattesUpdate,
-          curso: data.curso,
-          mesAnoIngresso: data.mesAnoIngresso,
-          avaliacaoAnterior: 'aprovado',
+          email: data.email || '',
+          nomeAluno: data.nomeAluno || '',
+          nomeOrientador: data.nomeOrientador || '',
+          numeroUSP: data.numeroUSP || '',
+          lattesLink: data.lattesLink || '',
+          lattesUpdate: data.lattesUpdate || '',
+          curso: data.curso || '',
+          mesAnoIngresso: data.mesAnoIngresso || '',
+          avaliacaoAnterior: data.avaliacaoAnterior || '',
           qualificacao: '',
           prazoQualificacao: '',
           prazoDeposito: '',
@@ -44,63 +60,64 @@ const FormularioEnvioRelatorio = ({ alunoId }) => {
           atividadesAcademicas: '',
           resumoAtividades: '',
           declaracaoAdicional: '',
-          apoioCoordenacao: ''
+          apoioCoordenacao: '',
         });
       } catch (error) {
-        console.error('Erro ao buscar dados:', error);
+        setErrorMessage(error.message);
       }
     };
     fetchData();
-  }, [alunoId]);
+  }, [relatorioId, user.token]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Dados do formulário:', formData);
-  };
+    console.log('Submitting relatorio with ID:', relatorioId);  // Debugging
 
-   const payload = {
-      email: formData.email,
-      nomeAluno: formData.nomeAluno,
-      nomeOrientador: formData.nomeOrientador,
-      numeroUSP: formData.numeroUSP,
-      lattesLink: formData.lattesLink,
-      lattesUpdate: formData.lattesUpdate,
-      curso: formData.curso,
-  };
+    if (!relatorioId) {
+      setErrorMessage('Relatório ID is missing');
+      return;
+    }
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`http://localhost:8000/api/relatorio/`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(payload)
-        });
+    try {
+      const dataToSend = {
+        ...formData,
+        relatorioId: relatorioId,
+      };
 
-        if (response.ok) {
-          console.log('Relatório enviado com sucesso');
-        } else {
-          console.error('Erro ao enviar relatório:', response.statusText);
-        }
-      } catch (error) {
-        console.error('Erro ao enviar dados:', error);
+      const response = await fetch(`http://localhost:8000/api/relatorio/?relatorioId=${relatorioId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Token ${user.token}`,
+        },
+        body: JSON.stringify(dataToSend),
+      });
+
+      if (response.ok) {
+        setSuccessMessage('Relatório enviado com sucesso!');
+        setErrorMessage('');
+      } else {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Erro ao enviar relatório');
       }
-    };
-    fetchData();
-  }, [alunoId]);
-
+    } catch (error) {
+      setErrorMessage(error.message);
+      setSuccessMessage('');
+    }
+  };
   return (
     <div className="Backgroung-envio-relatorio">
       <div className="Envio-relatorio-box-title">
         <h2 className="Envio-relatorio-title">Próximas entregas</h2>
       </div>
+
+      {successMessage && <div className="success-message">{successMessage}</div>}
+      {errorMessage && <div className="error-message">{errorMessage}</div>}
 
       <div className="Envio-relatorio-box-form">
         <form onSubmit={handleSubmit}>
