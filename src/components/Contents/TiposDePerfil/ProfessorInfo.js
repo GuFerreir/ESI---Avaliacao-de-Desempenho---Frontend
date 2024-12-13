@@ -1,4 +1,5 @@
 import React from 'react';
+import './ProfessorInfo.css';
 
 function ProfessorInfo({ professor }) {
     const alunosOrientados = professor.alunos || [];
@@ -8,7 +9,7 @@ function ProfessorInfo({ professor }) {
             <h3>Informações do Professor</h3>
             <p>Número de Alunos Orientados: {alunosOrientados.length}</p>
             <h3>Orientados</h3>
-            <table>
+            <table className="aligned-table">
                 <thead>
                     <tr>
                         <th>Matrícula</th>

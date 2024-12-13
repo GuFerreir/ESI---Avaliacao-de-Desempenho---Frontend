@@ -1,0 +1,48 @@
+.Aluno-Info {
+  background-color: #f7f9fc;
+  padding: 20px;
+  max-width: 600px;
+  margin: 20px auto;
+  border: 1px solid #dce1e8;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  font-family: Arial, sans-serif;
+}
+
+.Aluno-Info h3 {
+  font-size: 22px;
+  color: #2c3e50;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.Aluno-Info p {
+  font-size: 16px;
+  color: #555;
+  margin: 10px 0;
+}
+
+.Aluno-Info p::before {
+  font-weight: bold;
+  color: #333;
+}
+
+.Aluno-Info p + p {
+  border-top: 1px solid #e0e6ef;
+  padding-top: 10px;
+}
+
+@media (max-width: 768px) {
+  .Aluno-Info {
+    padding: 15px;
+  }
+
+  .Aluno-Info h3 {
+    font-size: 20px;
+  }
+
+  .Aluno-Info p {
+    font-size: 14px;
+  }
+}

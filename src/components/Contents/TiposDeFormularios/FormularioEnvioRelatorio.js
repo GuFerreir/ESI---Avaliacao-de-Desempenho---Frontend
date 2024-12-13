@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import '../../../css/ContentsCss/Formularios.css';
+import './FormularioEnvioRelatorio.css';
 import { UserContext } from '../../../contexts/UserContext';
 
 const FormularioEnvioRelatorio = ({ relatorioId }) => {
