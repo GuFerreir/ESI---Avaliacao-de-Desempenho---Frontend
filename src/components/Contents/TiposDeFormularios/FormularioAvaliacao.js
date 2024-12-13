@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
-import '../../../css/ContentsCss/Formularios.css';
 import { UserContext } from '../../../contexts/UserContext';
-
+import './FormularioAvaliacao.css';
 
 const FormularioAvaliacao = ({ relatorioId }) => {
   const { user } = useContext(UserContext);
@@ -99,57 +98,72 @@ const FormularioAvaliacao = ({ relatorioId }) => {
 
       <div className="Avaliacao-relatorio-box-form">
         <form onSubmit={handleSubmit}>
-          {/* Campos desabilitados (dados trazidos via API) */}
-          <label htmlFor="nomeParecerista">Nome do parecerista:</label>
-          <input type="text" id="nomeParecerista" name="nomeParecerista" disabled value={formData.nomeParecerista} /><br /><br />
-
-          <label htmlFor="papelParecerista">Papel neste parecer:</label>
-          <input type="text" id="papelParecerista" name="papelParecerista" disabled value={formData.papelParecerista} /><br /><br />
-
-          <label htmlFor="nomeAluno">Nome do aluno avaliado:</label>
-          <input type="text" id="nomeAluno" name="nomeAluno" disabled value={formData.nomeAluno} /><br /><br />
-
-          {/* Campos editáveis */}
-          <label htmlFor="parecerDesempenho">Parecer sobre o desempenho do aluno:</label><br />
-          <textarea
-            id="parecerDesempenho"
-            name="parecerDesempenho"
-            rows="4"
-            cols="50"
-            value={formData.parecerDesempenho}
-            onChange={handleChange}
-          ></textarea><br /><br />
-
-          <label htmlFor="avaliacaoDesempenho">Desempenho do aluno com base em seu parecer:</label><br />
-          <input
-            type="radio"
-            id="adequado"
-            name="avaliacaoDesempenho"
-            value="Adequado"
-            checked={formData.avaliacaoDesempenho === 'Adequado'}
-            onChange={handleChange}
-          />
-          <label htmlFor="adequado">Adequado</label><br />
-          <input
-            type="radio"
-            id="adequadoRessalvas"
-            name="avaliacaoDesempenho"
-            value="Adequado com Ressalvas"
-            checked={formData.avaliacaoDesempenho === 'Adequado com Ressalvas'}
-            onChange={handleChange}
-          />
-          <label htmlFor="adequadoRessalvas">Adequado com ressalvas</label><br />
-          <input
-            type="radio"
-            id="insatisfatorio"
-            name="avaliacaoDesempenho"
-            value="Insatisfatório"
-            checked={formData.avaliacaoDesempenho === 'Insatisfatório'}
-            onChange={handleChange}
-          />
-          <label htmlFor="insatisfatorio">Insatisfatório</label><br /><br />
-
-          <button type="submit">Enviar avaliação</button>
+          <table className="form-table">
+            <tbody>
+              <tr>
+                <td><label htmlFor="nomeParecerista">Nome do parecerista:</label></td>
+                <td><input type="text" id="nomeParecerista" name="nomeParecerista" disabled value={formData.nomeParecerista} /></td>
+              </tr>
+              <tr>
+                <td><label htmlFor="papelParecerista">Papel neste parecer:</label></td>
+                <td><input type="text" id="papelParecerista" name="papelParecerista" disabled value={formData.papelParecerista} /></td>
+              </tr>
+              <tr>
+                <td><label htmlFor="nomeAluno">Nome do aluno avaliado:</label></td>
+                <td><input type="text" id="nomeAluno" name="nomeAluno" disabled value={formData.nomeAluno} /></td>
+              </tr>
+              <tr>
+                <td><label htmlFor="parecerDesempenho">Parecer sobre o desempenho do aluno:</label></td>
+                <td>
+                  <textarea
+                    id="parecerDesempenho"
+                    name="parecerDesempenho"
+                    rows="4"
+                    cols="50"
+                    value={formData.parecerDesempenho}
+                    onChange={handleChange}
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td colSpan="2">
+                  <label>Desempenho do aluno com base em seu parecer:</label><br />
+                  <input
+                    type="radio"
+                    id="adequado"
+                    name="avaliacaoDesempenho"
+                    value="Adequado"
+                    checked={formData.avaliacaoDesempenho === 'Adequado'}
+                    onChange={handleChange}
+                  />
+                  <label htmlFor="adequado">Adequado</label><br />
+                  <input
+                    type="radio"
+                    id="adequadoRessalvas"
+                    name="avaliacaoDesempenho"
+                    value="Adequado com Ressalvas"
+                    checked={formData.avaliacaoDesempenho === 'Adequado com Ressalvas'}
+                    onChange={handleChange}
+                  />
+                  <label htmlFor="adequadoRessalvas">Adequado com ressalvas</label><br />
+                  <input
+                    type="radio"
+                    id="insatisfatorio"
+                    name="avaliacaoDesempenho"
+                    value="Insatisfatório"
+                    checked={formData.avaliacaoDesempenho === 'Insatisfatório'}
+                    onChange={handleChange}
+                  />
+                  <label htmlFor="insatisfatorio">Insatisfatório</label><br />
+                </td>
+              </tr>
+              <tr>
+                <td colSpan="2">
+                  <button type="submit">Enviar avaliação</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </form>
       </div>
     </div>

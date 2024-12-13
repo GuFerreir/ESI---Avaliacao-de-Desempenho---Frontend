@@ -1,4 +1,5 @@
 import React from 'react';
+import './AlunoInfo.css';
 
 function AlunoInfo({ aluno }) {
     const alunoData = aluno.aluno;

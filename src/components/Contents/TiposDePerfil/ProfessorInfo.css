@@ -1,0 +1,27 @@
+.Professor-Info {
+  padding: 20px;
+  max-width: 800px;
+  margin: auto;
+}
+
+.aligned-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.aligned-table th,
+.aligned-table td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+}
+
+.aligned-table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.aligned-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}

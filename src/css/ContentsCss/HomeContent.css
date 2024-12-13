@@ -1,0 +1,50 @@
+.Backgroung-banner {
+  background-color: #f4f6f9;
+  padding: 30px 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.Banner {
+  background-color: #ffffff;
+  padding: 30px;
+  max-width: 800px;
+  border: 1px solid #dce1e8;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.Banner img {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 20px;
+  border-radius: 8px;
+}
+
+.Banner h2 {
+  font-size: 28px;
+  color: #2c3e50;
+  margin-bottom: 20px;
+}
+
+.Banner p {
+  font-size: 16px;
+  color: #4a4a4a;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+@media (max-width: 768px) {
+  .Banner {
+    padding: 20px;
+  }
+
+  .Banner h2 {
+    font-size: 24px;
+  }
+
+  .Banner p {
+    font-size: 14px;
+  }
+}
